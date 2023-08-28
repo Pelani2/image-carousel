@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import fetchImages from "../../Utils/carouselImages";
+import Button from "../Button";
 import "./carousel-styles.scss";
 
 export default function Carousel() {
@@ -24,9 +25,12 @@ export default function Carousel() {
 
     return(
         <div className="carousel-container">
-            <button className="carousel-button" onClick={goToPreviousSlide}>
+            <Button
+                onClick={goToPreviousSlide}
+                variant="carousel-button backwards"
+            >
                 Backwards
-            </button>
+            </Button>
             {images.length > 0 && (
                 <div className="carousel__image-container">
                     <img 
@@ -36,9 +40,12 @@ export default function Carousel() {
                     />
                 </div>
             )}
-            <button className="carousel-button" onClick={goToNextSlide}>
-                Forward
-            </button>
+            <Button
+                onClick={goToNextSlide}
+                variant="carousel-button forwards"
+            >
+                Forwards
+            </Button>
         </div>
     );
 }

@@ -1,28 +1,13 @@
 .carousel-container {
+    position: relative;
     display: flex;
     align-items: center;
-    width: 80%;
+    flex-direction: column;
     margin: 0 auto;
     background-color: #222;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-
-    .carousel-button {
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-        padding: 10px 20px;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        transition: transform 0.3s ease-in-out;
-
-        &:hover {
-            transform: scale(1.1);
-            background-color: #333;
-        }
-    }
-
+    
     .carousel__image-container {
         display: flex;
         align-items: center;
