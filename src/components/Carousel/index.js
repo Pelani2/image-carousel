@@ -28,11 +28,13 @@ export default function Carousel() {
                 Backwards
             </button>
             {images.length > 0 && (
-                <img 
-                    className="carousel-image"
-                    src={images[currentIndex]}
-                    alt={`Slide ${currentIndex}`}
-                />
+                <div className="carousel__image-container">
+                    <img 
+                        className="carousel-image"
+                        src={images[currentIndex]}
+                        alt={`Slide ${currentIndex}`}
+                    />
+                </div>
             )}
             <button className="carousel-button" onClick={goToNextSlide}>
                 Forward
