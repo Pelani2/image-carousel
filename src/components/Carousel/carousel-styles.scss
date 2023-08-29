@@ -6,35 +6,34 @@
     height: 100vh;
     background-color: #f5f5f5;
     font-family: Arial, sans-serif;
-  }
+}
   
-  .carousel__image-container {
-    position: relative;
-  }
-  
-  .carousel__image-wrapper {
+.carousel__image-container {
+    position: relative; 
+}
+
+.carousel__image-wrapper {
     position: relative;
     display: inline-block;
     cursor: pointer;
-  }
-  
-  .carousel-image {
+}
+
+.carousel-image {
     width: 100%;
     max-height: 500px;
     object-fit: cover;
-  }
-  
-  .image-description {
+}
+
+.image-description {
     margin-top: 10px;
     font-size: 16px;
     text-align: center;
     color: #333;
-  }
-  
-  .carousel__controls {
+}
+
+.carousel__controls {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-  }
-  
-  
+    gap: 20px;
+}

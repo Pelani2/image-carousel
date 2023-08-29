@@ -13,7 +13,12 @@ export default function Carousel() {
             setImagesWithDescriptions(fetchedImagesWithDescriptions);
         };
         fetchImageData();
-      }, []);
+    }, []);
+    
+    const formatDescription = (description) => {
+        if (!description) return "";
+        return description.charAt(0).toUpperCase() + description.slice(1) + ".";
+    };
 
     const goToNextSlide = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % imagesWithDescriptions.length);
@@ -34,7 +39,7 @@ export default function Carousel() {
                             alt={`Slide ${currentIndex}`}
                         />
                         <p className="image-description">
-                            {imagesWithDescriptions[currentIndex].description}
+                            {formatDescription(imagesWithDescriptions[currentIndex].description)}
                         </p>
                     </div>
                 </div>
