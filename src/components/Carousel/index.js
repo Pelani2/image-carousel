@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchImagesWithDescriptions } from "../../Utils/carouselImages";
 import Button from "../Button";
+import { saveAs } from "file-saver";
 import "./carousel-styles.scss";
 
 export default function Carousel() {
@@ -14,11 +15,6 @@ export default function Carousel() {
         };
         fetchImageData();
     }, []);
-    
-    const formatDescription = (description) => {
-        if (!description) return "";
-        return description.charAt(0).toUpperCase() + description.slice(1) + ".";
-    };
 
     const goToNextSlide = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % imagesWithDescriptions.length);
@@ -26,6 +22,22 @@ export default function Carousel() {
 
     const goToPreviousSlide = () => {
         setCurrentIndex((prevIndex) => (prevIndex - 1 + imagesWithDescriptions.length) % imagesWithDescriptions.length);
+    };
+
+    const formatDescription = (description) => {
+        if (!description) return "";
+        return description.charAt(0).toUpperCase() + description.slice(1) + ".";
+    };
+
+    const downloadCurrentImage = () => {
+        const imageUrl = imagesWithDescriptions[currentIndex].url;
+        const imageName = `Slide ${currentIndex + 1}.jpg`;
+
+        fetch(imageUrl)
+            .then((response) => response.blob())
+            .then((blob) => {
+                saveAs(blob, imageName);
+            });
     };
 
     return(
@@ -50,6 +62,12 @@ export default function Carousel() {
                     variant="carousel-button"
                 >
                     Backwards
+                </Button>
+                <Button
+                    onClick={downloadCurrentImage}
+                    variant="carousel-button"
+                >
+                    Download
                 </Button>
                 <Button
                     onClick={goToNextSlide}
