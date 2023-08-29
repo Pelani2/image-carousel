@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { fetchImagesWithDescriptions } from "../../Utils/carouselImages";
 import Button from "../Button";
 import { saveAs } from "file-saver";
@@ -17,19 +17,23 @@ export default function Carousel() {
         fetchImageData();
     }, []);
 
+    const goToNextSlide = useCallback(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % imagesWithDescriptions.length);
+    }, [imagesWithDescriptions.length]);
+
     useEffect(() => {
         let interval;
 
-        if (autoplay) {
-            interval = setInterval(goToNextSlide, 5000);
-        }
+        const autoChangeSlide = () => {
+            if (autoplay) {
+                interval = setInterval(goToNextSlide, 5000);
+            }
+        };
+
+        autoChangeSlide();
 
         return () => clearInterval(interval);
-    }, [autoplay]);
-
-    const goToNextSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % imagesWithDescriptions.length);
-    };
+    }, [autoplay, currentIndex, goToNextSlide]);
 
     const goToPreviousSlide = () => {
         setCurrentIndex((prevIndex) => (prevIndex - 1 + imagesWithDescriptions.length) % imagesWithDescriptions.length);
