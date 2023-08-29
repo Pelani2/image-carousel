@@ -1,55 +1,58 @@
 import React, { useEffect, useState } from "react";
-import fetchImages from "../../Utils/carouselImages";
+import { fetchImagesWithDescriptions } from "../../Utils/carouselImages";
 import Button from "../Button";
 import "./carousel-styles.scss";
 
 export default function Carousel() {
-    const [images, setImages] = useState([]);
+    const [imagesWithDescriptions, setImagesWithDescriptions] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    useEffect(() => {
+        const fetchImageData = async () => {
+            const fetchedImagesWithDescriptions = await fetchImagesWithDescriptions();
+            setImagesWithDescriptions(fetchedImagesWithDescriptions);
+        };
+        fetchImageData();
+      }, []);
+
     const goToNextSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % imagesWithDescriptions.length);
     };
 
     const goToPreviousSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + imagesWithDescriptions.length) % imagesWithDescriptions.length);
     };
-
-    useEffect(() => {
-        const fetchImagesAndSetState = async () => {
-            const fetchedImages = await fetchImages();
-            setImages(fetchedImages);
-        };
-        fetchImagesAndSetState();
-    }, []);
 
     return(
         <div className="carousel-container">
-            <div className="carousel__content">
-                {images.length > 0 && (
-                    <div className="carousel__image-container">
+            {imagesWithDescriptions.length > 0 && (
+                <div className="carousel__image-container">
+                    <div className="carousel__image-wrapper">
                         <img 
                             className="carousel-image"
-                            src={images[currentIndex]}
+                            src={imagesWithDescriptions[currentIndex].url}
                             alt={`Slide ${currentIndex}`}
                         />
+                        <p className="image-description">
+                            {imagesWithDescriptions[currentIndex].description}
+                        </p>
                     </div>
-                )}
-                <div className="carousel__button-box">
-                    <Button
-                        onClick={goToPreviousSlide}
-                        variant="carousel-button"
-                    >
-                        Backwards
-                    </Button>
-                    <Button
-                        onClick={goToNextSlide}
-                        variant="carousel-button"
-                    >
-                        Forwards
-                    </Button>
                 </div>
-            </div> 
+            )}
+            <div className="carousel__controls">
+                <Button
+                    onClick={goToPreviousSlide}
+                    variant="carousel-button"
+                >
+                    Backwards
+                </Button>
+                <Button
+                    onClick={goToNextSlide}
+                    variant="carousel-button"
+                >
+                    Forwards
+                </Button>
+            </div>
         </div>
     );
 }

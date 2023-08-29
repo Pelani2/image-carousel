@@ -1,16 +1,21 @@
 import axios from "axios";
 
-const accessKey = "h6EuMvEw3fpcIipwntO1GEWNbYt7n-tzEAbvSTSZ_88";
+const accessKey = "hxzbByS4cwix3A70p1eW16LQUMSuojQtXkr5hHmjoJk";
 
-const fetchImages = async () => {
-    try {
-        const response = await axios.get(`https://api.unsplash.com/photos/random?count=5&client_id=${accessKey}`);
-        const imageUrls = response.data.map((image) => image.urls.regular);
-        return imageUrls;
-    } catch (error) {
-        console.error("Error fetching images: ", error);
-        return [];
-    }
+export const fetchImagesWithDescriptions = async () => {
+  try {
+    const response = await axios.get(
+      `https://api.unsplash.com/photos/random?count=5&client_id=${accessKey}&include=alt_description`
+    );
+
+    const imagesWithDescriptions = response.data.map((image) => ({
+      url: image.urls.regular,
+      description: image.alt_description,
+    }));
+
+    return imagesWithDescriptions;
+  } catch (error) {
+    console.error("Error fetching images with descriptions: ", error);
+    return [];
+  }
 };
-
-export default fetchImages;
