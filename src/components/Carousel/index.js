@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import { fetchImagesWithDescriptions } from "../../Utils/carouselImages";
 import Button from "../Button";
 import { saveAs } from "file-saver";
+import { Slide } from "@mui/material";
 import "./carousel-styles.scss";
 
 export default function Carousel() {
     const [imagesWithDescriptions, setImagesWithDescriptions] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [autoplay, setAutoplay] = useState(true);
+    const [fullscreen, setFullscreen] = useState(false);
 
     useEffect(() => {
         const fetchImageData = async () => {
@@ -55,24 +57,36 @@ export default function Carousel() {
             });
     };
 
+    const toggleFullscreen = () => {
+        if (!fullscreen) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+
+        setFullscreen(!fullscreen);
+    };
+
     return(
-        <div className="carousel-container">
+        <div className={`carousel-container ${fullscreen ? "fullscreen": ""}`}>
             {imagesWithDescriptions.length > 0 && (
-                <div className="carousel__image-container">
-                    <div className="image-information">
+                <Slide direction="left" in={true} mountOnEnter unmountOnExit>
+                    <div className="carousel__image-container">
+                        <div className="image-information">
                             <p className="information__description">
                                 {formatDescription(imagesWithDescriptions[currentIndex].description)}
                             </p>
                             <p className="information__author">
                                 By: {imagesWithDescriptions[currentIndex].author}
                             </p>
-                    </div>
+                        </div>
                         <img 
                             className="carousel-image"
                             src={imagesWithDescriptions[currentIndex].url}
                             alt={`Slide ${currentIndex}`}
                         />
-                </div>
+                    </div>
+                </Slide>
             )}
             <div className="carousel__controls">
                 <Button
@@ -92,6 +106,12 @@ export default function Carousel() {
                     variant="carousel-button"
                 >
                     Download
+                </Button>
+                <Button
+                    onClick={toggleFullscreen}
+                    variant="carousel-button"
+                >   
+                    {fullscreen ? "Exit Fullscreen" : "Fullscreen"}
                 </Button>
                 <Button
                     onClick={goToNextSlide}
