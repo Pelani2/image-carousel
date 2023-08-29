@@ -11,6 +11,7 @@ export const fetchImagesWithDescriptions = async () => {
     const imagesWithDescriptions = response.data.map((image) => ({
       url: image.urls.regular,
       description: image.alt_description,
+      author: image.user.name,
     }));
 
     return imagesWithDescriptions;

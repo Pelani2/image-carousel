@@ -7,6 +7,7 @@ import "./carousel-styles.scss";
 export default function Carousel() {
     const [imagesWithDescriptions, setImagesWithDescriptions] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [autoplay, setAutoplay] = useState(true);
 
     useEffect(() => {
         const fetchImageData = async () => {
@@ -15,6 +16,16 @@ export default function Carousel() {
         };
         fetchImageData();
     }, []);
+
+    useEffect(() => {
+        let interval;
+
+        if (autoplay) {
+            interval = setInterval(goToNextSlide, 5000);
+        }
+
+        return () => clearInterval(interval);
+    }, [autoplay]);
 
     const goToNextSlide = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % imagesWithDescriptions.length);
@@ -44,16 +55,19 @@ export default function Carousel() {
         <div className="carousel-container">
             {imagesWithDescriptions.length > 0 && (
                 <div className="carousel__image-container">
-                    <div className="carousel__image-wrapper">
+                    <div className="image-information">
+                            <p className="information__description">
+                                {formatDescription(imagesWithDescriptions[currentIndex].description)}
+                            </p>
+                            <p className="information__author">
+                                By: {imagesWithDescriptions[currentIndex].author}
+                            </p>
+                    </div>
                         <img 
                             className="carousel-image"
                             src={imagesWithDescriptions[currentIndex].url}
                             alt={`Slide ${currentIndex}`}
                         />
-                        <p className="image-description">
-                            {formatDescription(imagesWithDescriptions[currentIndex].description)}
-                        </p>
-                    </div>
                 </div>
             )}
             <div className="carousel__controls">
@@ -62,6 +76,12 @@ export default function Carousel() {
                     variant="carousel-button"
                 >
                     Backwards
+                </Button>
+                <Button
+                    onClick={() => setAutoplay(!autoplay)}
+                    variant="carousel-button"
+                >
+                    {autoplay ? "Pause Autoplay" : "Start Autoplay"}
                 </Button>
                 <Button
                     onClick={downloadCurrentImage}
