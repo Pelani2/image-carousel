@@ -1,0 +1,30 @@
+@keyframes slide-in-left {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-in-right {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.carousel__image-container {
+    position: relative;
+    transition: transform 0.5s ease-in-out;
+
+    &.next {
+        animation: slide-in-left 0.5s ease-in-out forwards;
+    }
+
+    &.prev {
+        animation: slide-in-right 0.5s ease-in-out forwards;
+    }
+}
